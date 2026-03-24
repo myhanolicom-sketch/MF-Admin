@@ -1,0 +1,47 @@
+{
+  "name": "mf-admin",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "ng": "ng",
+    "start": "ng serve --port 4201 --open",
+    "build": "ng build",
+    "watch": "ng build --watch --configuration development",
+    "test": "vitest",
+    "coverage": "vitest --coverage",
+    "lint": "eslint src/**/*.ts"
+  },
+  "dependencies": {
+    "@angular-architects/module-federation": "^17.0.8",
+    "@angular/animations": "^21.0.0",
+    "@angular/common": "^21.0.0",
+    "@angular/compiler": "^21.0.0",
+    "@angular/core": "^21.0.0",
+    "@angular/forms": "^21.0.0",
+    "@angular/platform-browser": "^21.0.0",
+    "@angular/platform-browser-dynamic": "^21.0.0",
+    "@angular/router": "^21.0.0",
+    "primeflex": "^3.3.0",
+    "primeicons": "^6.0.0",
+    "primeng": "^20.0.0",
+    "rxjs": "^7.8.0",
+    "tslib": "^2.6.0",
+    "zone.js": "^0.14.0"
+  },
+  "devDependencies": {
+    "@angular-builders/custom-webpack": "^17.0.0",
+    "@angular-devkit/build-angular": "^21.0.0",
+    "@angular/cli": "^21.0.0",
+    "@angular/compiler-cli": "^21.0.0",
+    "@testing-library/angular": "^14.0.0",
+    "@testing-library/jest-dom": "^6.0.0",
+    "@types/node": "^20.0.0",
+    "@typescript-eslint/eslint-plugin": "^7.0.0",
+    "@typescript-eslint/parser": "^7.0.0",
+    "eslint": "^8.57.0",
+    "jsdom": "^23.0.0",
+    "prettier": "^3.0.0",
+    "typescript": "^5.3.0",
+    "vitest": "^1.0.0"
+  }
+}

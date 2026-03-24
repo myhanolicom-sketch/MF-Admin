@@ -1,0 +1,114 @@
+# Dependencies
+node_modules/
+/.pnp
+.pnp.js
+package-lock.json
+yarn.lock
+
+# Testing
+/coverage
+.nyc_output
+*.lcov
+
+# Production
+/build
+/dist
+dist/
+/.next
+out/
+
+# Angular
+.angular/
+.angularrc.json
+.angular-cli.json
+
+# Build artifacts
+*.bundle.js
+*.chunk.js
+*.js.map
+
+# Misc
+.DS_Store
+Thumbs.db
+npm-debug.log
+npm-debug.log.*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+*.log
+
+# Editor directories and files
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+*.swp
+*.swo
+*~
+*.iml
+
+# Environment
+.env
+.env.local
+.env.*.local
+.env.production.local
+
+# IDE
+.vscode/
+.idea/
+*.code-workspace
+
+# System
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+.Spotlight-V100
+.Trashes
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+.parcel-cache/
+
+# Docker
+.dockerignore
+docker-compose.override.yml
+
+# OS
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Node
+node_modules
+.npm
+.eslintcache
+
+# Webpack
+dist/
+out/
+.webpack/
+.webpack-dev-server/
+
+# Testing
+.nyc_output
+coverage/
+
+# Misc
+.env.local
+.env.*.local
+*.pem
+
+# lock files (optional - uncomment to ignore)
+# package-lock.json
+# yarn.lock
+
