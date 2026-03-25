@@ -9,7 +9,7 @@ import { RouterModule } from '@angular/router';
   template: `
     <div class="admin-container">
       <header class="admin-header">
-        <h1>⚙️ Módulo de Administración</h1>
+        <h1>⚙️Pantalla de Monitoreo</h1>
       </header>
       <main class="admin-content">
         <router-outlet></router-outlet>

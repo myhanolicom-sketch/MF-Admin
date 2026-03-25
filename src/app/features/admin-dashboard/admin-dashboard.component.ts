@@ -7,19 +7,23 @@ import { CommonModule } from '@angular/common';
   imports: [CommonModule],
   template: `
     <div class="dashboard">
-      <h2>Panel de Administración MultiFrontend</h2>
+      <h2>Panel de Administración</h2>
       <div class="stats">
         <div class="stat-card">
-          <div class="stat-value">157</div>
-          <div class="stat-label">Usuarios Activos</div>
+          <div class="stat-value">120</div>
+          <div class="stat-label">Archivos hoy</div>
         </div>
         <div class="stat-card">
-          <div class="stat-value">42</div>
-          <div class="stat-label">Transacciones</div>
+          <div class="stat-value">5/div>
+          <div class="stat-label">Errores</div>
         </div>
         <div class="stat-card">
-          <div class="stat-value">$24,567</div>
-          <div class="stat-label">Ingresos</div>
+          <div class="stat-value">15</div>
+          <div class="stat-label">Reenviados</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">15</div>
+          <div class="stat-label">Regenerados</div>
         </div>
       </div>
     </div>
