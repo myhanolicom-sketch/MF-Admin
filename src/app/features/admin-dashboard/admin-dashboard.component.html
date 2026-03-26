@@ -1,32 +1,119 @@
 <div class="users">
   <h2>Pantalla de Monitoreo</h2>
 
-  <p-table [value]="users()" [paginator]="true" [rows]="10" [responsiveLayout]="'scroll'" [showCurrentPageReport]="true" currentPageReportTemplate="Mostrando {first} - {last} de {totalRecords}">
+  <!-- Sección de Filtros -->
+  <p-card class="mb-4">
+    
+      <div class="text-xl font-bold">Filtros de Búsqueda</div>
+    
+
+    <form [formGroup]="filterForm" class="p-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+        <!-- Fecha Desde -->
+        <div>
+          <label for="fechaDesde" class="block mb-2 font-semibold">Fecha Desde:</label>
+          <input 
+            id="fechaDesde"
+            type="date"
+            formControlName="fechaDesde"
+            class="w-full p-2 border border-gray-300 rounded">
+        </div>
+
+        <!-- Fecha Hasta -->
+        <div>
+          <label for="fechaHasta" class="block mb-2 font-semibold">Fecha Hasta:</label>
+          <input 
+            id="fechaHasta"
+            type="date"
+            formControlName="fechaHasta"
+            class="w-full p-2 border border-gray-300 rounded">
+        </div>
+      </div>
+
+      <!-- Estados -->
+      <div class="mb-4">
+        <label class="block mb-3 font-semibold">Estados:</label>
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div *ngFor="let estado of estados" class="flex items-center gap-2">
+            <input 
+              [id]="'estado-' + estado.key"
+              type="checkbox" 
+              [(ngModel)]="estado.selected"
+              [ngModelOptions]="{standalone: true}">
+            <label [for]="'estado-' + estado.key" class="cursor-pointer mb-0">{{ estado.label }}</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Archivos -->
+      <div class="mb-4">
+        <label class="block mb-3 font-semibold">Archivos:</label>
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div *ngFor="let archivo of archivos" class="flex items-center gap-2">
+            <input 
+              [id]="'archivo-' + archivo.id"
+              type="checkbox" 
+              [(ngModel)]="archivo.checked"
+              [ngModelOptions]="{standalone: true}">
+            <label [for]="'archivo-' + archivo.id" class="cursor-pointer mb-0">{{ archivo.label }}</label>
+          </div>
+        </div>
+      </div>
+    </form>
+  </p-card>
+
+  <!-- Botones de Acción -->
+  <div class="mb-4 flex gap-2">
+    <button 
+      pButton 
+      type="button" 
+      label="Buscar" 
+      icon="pi pi-search" 
+      class="p-button-primary"
+      (click)="onSearch()">
+    </button>
+    <button 
+      pButton 
+      type="button" 
+      label="Limpiar" 
+      icon="pi pi-times" 
+      class="p-button-secondary"
+      (click)="onClear()">
+    </button>
+    <button 
+      pButton 
+      type="button" 
+      icon="pi pi-file-excel" 
+      class="p-button-success"
+      (click)="exportToExcel()">
+    </button>
+  </div>
+
+  <p-table [value]="filteredData" [paginator]="true" [rows]="10" [responsiveLayout]="'scroll'" [showCurrentPageReport]="true" currentPageReportTemplate="Mostrando {first} - {last} de {totalRecords}">
     <ng-template pTemplate="header">
       <tr>
-        <th pSortableColumn="id">Fecha/Hora <p-sortIcon field="id"></p-sortIcon></th>
-        <th pSortableColumn="name">Archivo <p-sortIcon field="name"></p-sortIcon></th>
-        <th pSortableColumn="email">Estado <p-sortIcon field="email"></p-sortIcon></th>
-        
+        <th pSortableColumn="fechaHora">Fecha/Hora <p-sortIcon field="fechaHora"></p-sortIcon></th>
+        <th pSortableColumn="archivo">Archivo <p-sortIcon field="archivo"></p-sortIcon></th>
+        <th pSortableColumn="estado">Estado <p-sortIcon field="estado"></p-sortIcon></th>
         <th>Acciones</th>
       </tr>
     </ng-template>
 
-    <ng-template pTemplate="body" let-user>
+    <ng-template pTemplate="body" let-report>
       <tr>
-        <td>{{ user.id }}</td>
-        <td>{{ user.name }}</td>
-        <td>{{ user.email }}</td>
+        <td>{{ report.fechaHora }}</td>
+        <td>{{ report.archivo }}</td>
+        <td>{{ report.estado }}</td>
         <td>
-          <button pButton type="button" icon="pi pi-eye" class="p-button-sm p-button-danger" (click)="editUser(user)"></button>
-          <button pButton type="button"  icon="pi pi-send" class="p-button-sm p-button-danger" ></button>
+          <button pButton type="button" icon="pi pi-eye" class="p-button-sm p-button-info" (click)="editUser(report)"></button>
+          <button pButton type="button"  icon="pi pi-send" class="p-button-sm p-button-success" ></button>
         </td>
       </tr>
     </ng-template>
 
     <ng-template pTemplate="emptymessage">
       <tr>
-        <td colspan="5" class="text-center">No hay usuarios para mostrar</td>
+        <td colspan="4" class="text-center">No hay datos para mostrar</td>
       </tr>
     </ng-template>
   </p-table>

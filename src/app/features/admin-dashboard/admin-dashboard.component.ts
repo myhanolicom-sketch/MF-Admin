@@ -2,11 +2,11 @@ import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
+import * as XLSX from 'xlsx';
 
 // PrimeNG imports
 import { CardModule } from 'primeng/card';
 import { FieldsetModule } from 'primeng/fieldset';
-import { DatePickerModule } from 'primeng/datepicker';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ButtonModule } from 'primeng/button';
 import { TableModule } from 'primeng/table';
@@ -40,7 +40,6 @@ interface User {
     FormsModule,
     CardModule,
     FieldsetModule,
-    DatePickerModule,
     CheckboxModule,
     ButtonModule,
     TableModule,
@@ -77,8 +76,8 @@ export class AdminDashboardComponent {
   estados = [
     { key: 'generadoOk', label: 'Generado OK', color: 'success', selected: false },
     { key: 'enviado', label: 'Enviado', color: 'info', selected: false },
-    { key: 'errorEnviar', label: 'Error al enviar', color: 'danger', selected: false },
-    { key: 'errorGenerar', label: 'Error al generar', color: 'danger', selected: false }
+    { key: 'errorEnviar', label: 'Error al Regenerar', color: 'danger', selected: false },
+    { key: 'errorGenerar', label: 'Error al Reenviar', color: 'danger', selected: false }
   ];
 
   // Tipos de archivos
@@ -123,7 +122,9 @@ export class AdminDashboardComponent {
   }
 
   ngOnInit(): void {
-    this.applyFilters();
+    // Inicializar la tabla con todos los datos disponibles
+    this.filteredData = [...this.reportData];
+    this.totalRecords = this.filteredData.length;
   }
 
   private parseFechaHora(fechaHora: string): Date {
@@ -134,7 +135,7 @@ export class AdminDashboardComponent {
     return new Date(anio, mes - 1, dia, horaNum, minNum);
   }
 
-  private applyFilters(): void {
+  applyFilters(): void {
     const fechaDesde: Date | null = this.filterForm.value.fechaDesde;
     const fechaHasta: Date | null = this.filterForm.value.fechaHasta;
     const estadosSeleccionados = this.estados.filter(e => e.selected).map(e => e.key);
@@ -155,6 +156,10 @@ export class AdminDashboardComponent {
   }
 
   onSearch(): void {
+    this.applyFilters();
+  }
+
+  applyFiltersOnChange(): void {
     this.applyFilters();
   }
 
@@ -210,5 +215,26 @@ export class AdminDashboardComponent {
   downloadFile(item: ReportData): void {
     console.log('Descargar archivo:', item);
     // Implementar lógica para descargar archivo
+  }
+
+  exportToExcel(): void {
+    const dataToExport = this.filteredData.map(item => ({
+      'Fecha/Hora': item.fechaHora,
+      'Archivo': item.archivo,
+      'Estado': this.getEstadoLabel(item.estado)
+    }));
+
+    const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(dataToExport);
+    const workbook: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Monitoreo');
+
+    // Ajustar ancho de columnas
+    worksheet['!cols'] = [
+      { wch: 20 },
+      { wch: 12 },
+      { wch: 20 }
+    ];
+
+    XLSX.writeFile(workbook, 'Reporte_Monitoreo.xlsx');
   }
 }
