@@ -8,9 +8,7 @@ import { RouterModule } from '@angular/router';
   imports: [CommonModule, RouterModule],
   template: `
     <div class="admin-container">
-      <header class="admin-header">
-        <h1>⚙️Pantalla de Monitoreo</h1>
-      </header>
+     
       <main class="admin-content">
         <router-outlet></router-outlet>
       </main>
@@ -22,7 +20,7 @@ import { RouterModule } from '@angular/router';
     }
     
     .admin-header {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background: linear-gradient(135deg, #c9436b 0%, #a24b85 100%);
       color: white;
       padding: 2rem;
       border-radius: 8px;
@@ -34,9 +32,10 @@ import { RouterModule } from '@angular/router';
     }
     
     .admin-content {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 2rem;
+      display: block;
+      width: 100%;
+      min-height: calc(90vh - 80px);
+      padding: 1rem 0;
     }
   `]
 })

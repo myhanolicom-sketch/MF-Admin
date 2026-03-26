@@ -1,0 +1,167 @@
+// Custom styles for the admin dashboard
+:host {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  background-color: #f8f9fa;
+  height: 100vh;
+  max-height: 100vh;
+  padding: 1rem 0.6rem;
+  overflow: hidden;
+}
+
+.dashboard-wrapper {
+  width: min(960px, 100%);
+  max-width: 980px;
+  height: calc(100vh - 1.9rem);
+  max-height: calc(100vh - 1.9rem);
+  padding: 0.5rem;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+// Card customizations
+::ng-deep .p-card {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
+  border: none;
+  border-radius: 10px;
+
+  .p-card-header {
+    background: linear-gradient(135deg, #4f46e5 0%, #2563eb 100%);
+    color: white;
+    border-bottom: none;
+    padding: 1.2rem 1.5rem;
+
+    h5, h6 {
+      margin: 0;
+      font-weight: 700;
+    }
+  }
+
+  .p-card-body {
+    padding: 1.4rem;
+  }
+}
+
+// Fieldset customizations
+::ng-deep .p-fieldset {
+  border: 1px solid #e9ecef;
+  border-radius: 6px;
+
+  .p-fieldset-legend {
+    background-color: #f8f9fa;
+    color: #495057;
+    font-weight: 600;
+    border: 1px solid #e9ecef;
+    padding: 0.5rem 1rem;
+  }
+
+  .p-fieldset-content {
+    padding: 1rem;
+  }
+}
+
+// Table customizations
+::ng-deep .p-datatable {
+  .p-datatable-thead > tr > th {
+    background-color: #f8f9fa;
+    color: #495057;
+    font-weight: 600;
+    border-bottom: 2px solid #dee2e6;
+    padding: 1rem 0.75rem;
+  }
+
+  .p-datatable-tbody > tr {
+    &:hover {
+      background-color: #f8f9fa;
+    }
+
+    > td {
+      padding: 0.75rem;
+      border-bottom: 1px solid #dee2e6;
+    }
+  }
+
+  .p-paginator {
+    padding: 1rem 0;
+    border-top: 1px solid #dee2e6;
+
+    .p-paginator-pages {
+      .p-paginator-page {
+        &:hover {
+          background-color: #e9ecef;
+        }
+
+        &.p-highlight {
+          background-color: #667eea;
+          color: white;
+        }
+      }
+    }
+  }
+}
+
+// Button customizations
+::ng-deep .p-button {
+  border-radius: 8px;
+  font-weight: 600;
+  min-width: 140px;
+  text-transform: uppercase;
+}
+
+::ng-deep .p-button-primary,
+::ng-deep .p-button-info {
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.14);
+}
+
+::ng-deep .p-button-primary:hover,
+::ng-deep .p-button-info:hover {
+  transform: translateY(-2px);
+}
+
+::ng-deep .p-button-text {
+  background: transparent;
+  border: 1px solid #d8d8d8;
+}
+
+::ng-deep .p-button-text.p-button-rounded {
+  border-radius: 999px;
+}
+
+
+// Badge customizations
+::ng-deep .p-badge {
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+// Checkbox customizations
+::ng-deep .p-checkbox {
+  .p-checkbox-box {
+    border-radius: 4px;
+  }
+}
+
+// Calendar customizations
+::ng-deep .p-datepicker {
+  .p-inputtext {
+    border-radius: 6px;
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .grid {
+    .col-12 {
+      padding: 0.5rem;
+    }
+  }
+
+  ::ng-deep .p-card {
+    margin: 0.5rem;
+
+    .p-card-body {
+      padding: 1rem;
+    }
+  }
+}

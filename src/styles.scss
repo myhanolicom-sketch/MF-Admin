@@ -1,7 +1,22 @@
+/* PrimeNG Theme - handled by provider */
+/* @import 'primeng/resources/themes/lara-light-blue/theme.css'; */
+/* @import 'primeng/resources/primeng.css'; */
+@import 'primeicons/primeicons.css';
+@import 'primeflex/primeflex.css';
+
 /* MFE Admin Styles */
+html, body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
 body {
   background: #f5f7fa;
   color: #333;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .admin-container {
@@ -9,4 +24,13 @@ body {
   border-radius: 8px;
   margin: 0;
   padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+
+:host ::ng-deep .p-datepicker input {
+  height: 32px;
+  font-size: 0.85rem;
 }

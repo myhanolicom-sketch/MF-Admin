@@ -1,0 +1,33 @@
+<div class="users">
+  <h2>Pantalla de Monitoreo</h2>
+
+  <p-table [value]="users()" [paginator]="true" [rows]="10" [responsiveLayout]="'scroll'" [showCurrentPageReport]="true" currentPageReportTemplate="Mostrando {first} - {last} de {totalRecords}">
+    <ng-template pTemplate="header">
+      <tr>
+        <th pSortableColumn="id">Fecha/Hora <p-sortIcon field="id"></p-sortIcon></th>
+        <th pSortableColumn="name">Archivo <p-sortIcon field="name"></p-sortIcon></th>
+        <th pSortableColumn="email">Estado <p-sortIcon field="email"></p-sortIcon></th>
+        
+        <th>Acciones</th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-user>
+      <tr>
+        <td>{{ user.id }}</td>
+        <td>{{ user.name }}</td>
+        <td>{{ user.email }}</td>
+        <td>
+          <button pButton type="button" icon="pi pi-eye" class="p-button-sm p-button-danger" (click)="editUser(user)"></button>
+          <button pButton type="button"  icon="pi pi-send" class="p-button-sm p-button-danger" ></button>
+        </td>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="5" class="text-center">No hay usuarios para mostrar</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
