@@ -1,76 +1,79 @@
-<div class="users">
-  <h2>Pantalla de Monitoreo</h2>
+<div class="dashboard">
 
-  <!-- Sección de Filtros -->
-  <p-card class="mb-4">
-    
-      <div class="text-xl font-bold">Filtros de Búsqueda</div>
+  <form [formGroup]="filterForm" class="filters-form">
+
     
 
-    <form [formGroup]="filterForm" class="p-4">
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-        <!-- Fecha Desde -->
-        <div>
-          <label for="fechaDesde" class="block mb-2 font-semibold">Fecha Desde:</label>
-          <input 
+<!-- FECHAS -->
+    <div class="filter-row-fechas-inline">
+      <div class="fecha-inline-item">
+        <label>Fecha:</label>
+           <p-datepicker
             id="fechaDesde"
-            type="date"
             formControlName="fechaDesde"
-            class="w-full p-2 border border-gray-300 rounded">
-        </div>
+            [showIcon]="true"
+            placeholder="Desde"
+            styleClass="w-full datepicker-input"
+            panelStyleClass="datepicker-panel"
+            appendTo="body">
+          </p-datepicker>
+      </div>
 
-        <!-- Fecha Hasta -->
-        <div>
-          <label for="fechaHasta" class="block mb-2 font-semibold">Fecha Hasta:</label>
-          <input 
+      <div class="fecha-inline-item">
+        <label>---</label>
+        <p-datepicker
             id="fechaHasta"
-            type="date"
             formControlName="fechaHasta"
-            class="w-full p-2 border border-gray-300 rounded">
-        </div>
+            [showIcon]="true"
+            placeholder="Hasta"
+            styleClass="w-full datepicker-input"
+            panelStyleClass="datepicker-panel"
+            appendTo="body">
+          </p-datepicker>
       </div>
 
-      <!-- Estados -->
-      <div class="mb-4">
-        <label class="block mb-3 font-semibold">Estados:</label>
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <div *ngFor="let estado of estados" class="flex items-center gap-2">
-            <input 
-              [id]="'estado-' + estado.key"
-              type="checkbox" 
-              [(ngModel)]="estado.selected"
-              [ngModelOptions]="{standalone: true}">
-            <label [for]="'estado-' + estado.key" class="cursor-pointer mb-0">{{ estado.label }}</label>
-          </div>
+        <div class="filters-side-by-side">
+ <!-- ARCHIVOS -->
+    <div class="filter-section filter-estados">
+      <span class="section-title">Estado</span>
+      <div formArrayName="estados" class="checkbox-group">
+         <div class="checkbox-item" *ngFor="let e of estadosList; let i = index">
+          <p-checkbox [formControlName]="i" binary="true"></p-checkbox>
+          <label>{{ e.label }}</label>
+        </div>
+        
+      </div>
+    </div>
+
+    </div>
+
+    <!-- ESTADOS -->
+    <div class="filter-section filter-archivos">
+      <span>Archivos</span>
+      <div formArrayName="archivos" class="checkbox-group">
+       <div class="checkbox-item" *ngFor="let a of archivosList; let i = index">
+          <p-checkbox [formControlName]="i" binary="true"></p-checkbox>
+          <label>{{ a }}</label>
         </div>
       </div>
+    </div>
 
-      <!-- Archivos -->
-      <div class="mb-4">
-        <label class="block mb-3 font-semibold">Archivos:</label>
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <div *ngFor="let archivo of archivos" class="flex items-center gap-2">
-            <input 
-              [id]="'archivo-' + archivo.id"
-              type="checkbox" 
-              [(ngModel)]="archivo.checked"
-              [ngModelOptions]="{standalone: true}">
-            <label [for]="'archivo-' + archivo.id" class="cursor-pointer mb-0">{{ archivo.label }}</label>
-          </div>
         </div>
-      </div>
-    </form>
-  </p-card>
 
-  <!-- Botones de Acción -->
-  <div class="mb-4 flex gap-2">
+  
+    
+
+   
+
+    <!-- BOTONES -->
+    <div class="mb-4 flex gap-2 filter-actions">
     <button 
       pButton 
       type="button" 
       label="Buscar" 
       icon="pi pi-search" 
       class="p-button-primary"
-      (click)="onSearch()">
+      >
     </button>
     <button 
       pButton 
@@ -80,17 +83,26 @@
       class="p-button-secondary"
       (click)="onClear()">
     </button>
-    <button 
-      pButton 
-      type="button" 
-      icon="pi pi-file-excel" 
-      class="p-button-success"
-      (click)="exportToExcel()">
-    </button>
+   
   </div>
 
-  <p-table [value]="filteredData" [paginator]="true" [rows]="10" [responsiveLayout]="'scroll'" [showCurrentPageReport]="true" currentPageReportTemplate="Mostrando {first} - {last} de {totalRecords}">
-    <ng-template pTemplate="header">
+  </form>
+
+  
+<!-- TABLA -->
+<p-table [value]="filteredData()" [paginator]="true" [rows]="10" [responsiveLayout]="'scroll'" [showCurrentPageReport]="true" currentPageReportTemplate="Mostrando {first} - {last} de {totalRecords}">
+   <ng-template pTemplate="caption">
+    <div class="table-header">
+      <button 
+        pButton 
+        type="button" 
+        icon="pi pi-file-excel" 
+         class="p-button-success excel-btn"
+        (click)="exportToExcel()">
+      </button>
+    </div>
+  </ng-template>
+  <ng-template pTemplate="header">
       <tr>
         <th pSortableColumn="fechaHora">Fecha/Hora <p-sortIcon field="fechaHora"></p-sortIcon></th>
         <th pSortableColumn="archivo">Archivo <p-sortIcon field="archivo"></p-sortIcon></th>
@@ -105,7 +117,7 @@
         <td>{{ report.archivo }}</td>
         <td>{{ report.estado }}</td>
         <td>
-          <button pButton type="button" icon="pi pi-eye" class="p-button-sm p-button-info" (click)="editUser(report)"></button>
+          <button pButton type="button" icon="pi pi-eye" class="p-button-sm p-button-info" ></button>
           <button pButton type="button"  icon="pi pi-send" class="p-button-sm p-button-success" ></button>
         </td>
       </tr>
@@ -118,3 +130,5 @@
     </ng-template>
   </p-table>
 </div>
+ 
+ 

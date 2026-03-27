@@ -1,167 +1,597 @@
-// Custom styles for the admin dashboard
 :host {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  background-color: #f8f9fa;
-  height: 100vh;
-  max-height: 100vh;
-  padding: 1rem 0.6rem;
-  overflow: hidden;
+  display: block;
+  min-height: 100vh;
+  padding: 1.25rem;
+  background: #f4f6f9;
 }
 
-.dashboard-wrapper {
-  width: min(960px, 100%);
-  max-width: 980px;
-  height: calc(100vh - 1.9rem);
-  max-height: calc(100vh - 1.9rem);
-  padding: 0.5rem;
-  overflow-y: auto;
-  box-sizing: border-box;
+/* CONTENEDOR */
+.dashboard {
+  max-width: 920px;
+  margin: 0 auto;
 }
 
-// Card customizations
+/* TITULO */
+h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 1rem;
+}
+
+/* CARD */
 ::ng-deep .p-card {
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
-  border: none;
-  border-radius: 10px;
-
-  .p-card-header {
-    background: linear-gradient(135deg, #4f46e5 0%, #2563eb 100%);
-    color: white;
-    border-bottom: none;
-    padding: 1.2rem 1.5rem;
-
-    h5, h6 {
-      margin: 0;
-      font-weight: 700;
-    }
-  }
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 
   .p-card-body {
-    padding: 1.4rem;
-  }
-}
-
-// Fieldset customizations
-::ng-deep .p-fieldset {
-  border: 1px solid #e9ecef;
-  border-radius: 6px;
-
-  .p-fieldset-legend {
-    background-color: #f8f9fa;
-    color: #495057;
-    font-weight: 600;
-    border: 1px solid #e9ecef;
-    padding: 0.5rem 1rem;
-  }
-
-  .p-fieldset-content {
     padding: 1rem;
   }
 }
 
-// Table customizations
-::ng-deep .p-datatable {
-  .p-datatable-thead > tr > th {
-    background-color: #f8f9fa;
-    color: #495057;
-    font-weight: 600;
-    border-bottom: 2px solid #dee2e6;
-    padding: 1rem 0.75rem;
+/* FORM */
+.filters-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* GRID FILTROS */
+.filter-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0.8rem;
+  align-items: flex-start;
+}
+
+/* GRUPOS */
+.filter-group {
+  flex-direction: column;
+  gap: 0.3rem;
+
+  label {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #6b7280;
+    margin: 0;
+  }
+}
+
+/* LABEL ESTILOS GENERALES */
+label {
+  display: block;
+  margin: 0;
+  padding: 0;
+}
+
+/* INPUTS PRIME GENERALES */
+::ng-deep .p-inputtext {
+   height: 28px;
+  font-size: 0.7rem;
+  padding: 0.3rem 0.5rem;
+}
+
+/* CONTENEDOR DATEPICKER */
+::ng-deep .p-datepicker {
+  display: inline-flex !important; 
+  width: auto !important;          
+  
+  align-items: center;
+  
+  height: auto;
+  position: relative;
+  gap: 0;
+  border: none !important;
+  background: transparent !important;
+
+  .p-inputtext {
+
+  padding: 0.3rem 0.5rem;
+
+    height: 32px;
+    padding: 0.4rem 0.6rem;
+    font-size: 0.7rem;
+    border: 1px solid #d1d5db;
+    border-radius: 5px 0 0 5px;
+     flex: 0 0 200px !important;  // 👈 ancho fijo real
+  width: 200px !important;
+  max-width: 200px !important;
+    margin: 0;
+    background: white;
+
+    &:focus {
+      border-color: #3b82f6;
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+    }
+  }
+}
+
+/* ICONO DATEPICKER */
+::ng-deep .p-datepicker-trigger {
+  width: 20px !important;
+  height: 20px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border: 1px solid #d1d5db !important;
+  border-left: none !important;
+  border-radius: 0 5px 5px 0 !important;
+  background: #f9fafb !important;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+
+  &:hover {
+    background-color: #f3f4f6 !important;
   }
 
-  .p-datatable-tbody > tr {
-    &:hover {
-      background-color: #f8f9fa;
+  i,
+  .p-icon {
+    font-size: 0.65rem !important;
+    color: #6b7280 !important;
+  }
+}
+
+/* PANEL DEL CALENDARIO - ESTILOS COMPLETOS */
+::ng-deep .p-datepicker-panel {
+  z-index: 10001 !important;
+  position: absolute !important;
+  top: 100% !important;
+  left: 0 !important;
+  right: auto !important;
+  bottom: auto !important;
+  width: auto !important;
+  min-width: 280px !important;
+  border: 1px solid #d1d5db !important;
+  border-radius: 6px !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+  background: white !important;
+  padding: 0.5rem !important;
+  margin-top: 0.25rem;
+  font-family: inherit !important;
+
+  /* HEADER DEL CALENDARIO */
+  .p-datepicker-header {
+    padding: 0.4rem 0.2rem !important;
+    border: none !important;
+    background: transparent !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    gap: 0.2rem !important;
+    margin-bottom: 0.4rem !important;
+
+    /* Botones navegación */
+    button {
+      width: 20px !important;
+      height: 20px !important;
+      padding: 0 !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      background: transparent !important;
+      border: none !important;
+      border-radius: 3px !important;
+      cursor: pointer;
+      font-size: 0.55rem !important;
+      transition: all 0.2s ease;
+
+      &:hover {
+        background: #f3f4f6 !important;
+      }
+
+      i,
+      .p-icon {
+        font-size: 0.55rem !important;
+        color: #6b7280 !important;
+      }
     }
 
-    > td {
-      padding: 0.75rem;
-      border-bottom: 1px solid #dee2e6;
+    .p-datepicker-title {
+      text-align: center;
+      flex: 1;
+      font-size: 0.8rem !important;
+      font-weight: 700 !important;
+      color: #1f2937 !important;
+      padding: 0 0.25rem !important;
+      white-space: normal;
+      line-height: 1.2;
     }
   }
 
-  .p-paginator {
-    padding: 1rem 0;
-    border-top: 1px solid #dee2e6;
+  /* GRUPOS DE FECHAS */
+  .p-datepicker-group {
+    padding: 0 !important;
+    border: none !important;
+  }
 
-    .p-paginator-pages {
-      .p-paginator-page {
-        &:hover {
-          background-color: #e9ecef;
-        }
+  /* ENCABEZADO DÍAS DE SEMANA */
+  .p-datepicker-weekheader {
+    padding: 0.25rem 0.1rem !important;
+    margin: 0 !important;
 
-        &.p-highlight {
-          background-color: #667eea;
-          color: white;
+    tr {
+      th {
+        padding: 0.2rem 0.05rem !important;
+        text-align: center;
+        font-size: 0.58rem !important;
+        font-weight: 700 !important;
+        color: #374151 !important;
+        border: none !important;
+        height: 18px;
+      }
+    }
+  }
+
+  /* TABLA DE CALENDARIO */
+  .p-datepicker-calendar {
+    width: 100% !important;
+    margin: 0 !important;
+    border-collapse: collapse;
+
+    thead {
+      display: none;
+    }
+
+    tbody {
+      tr {
+        height: 20px;
+
+        td {
+          padding: 1px !important;
+          text-align: center;
+          border: none !important;
+          height: 20px;
+
+          /* Fechas normales */
+          a,
+          span {
+            width: 22px !important;
+            height: 22px !important;
+            line-height: 22px !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            font-size: 0.65rem !important;
+            border-radius: 3px !important;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            padding: 0 !important;
+            margin: 0 !important;
+            color: #374151 !important;
+            background: transparent !important;
+            border: none !important;
+
+            &:hover:not(.p-disabled) {
+              background-color: #f3f4f6 !important;
+            }
+          }
+
+          /* Fecha seleccionada */
+          a.p-highlight,
+          span.p-highlight {
+            background-color: #3b82f6 !important;
+            color: white !important;
+            font-weight: 600;
+
+            &:hover {
+              background-color: #2563eb !important;
+            }
+          }
+
+          /* Fecha deshabilitada */
+          .p-disabled {
+            color: #d1d5db !important;
+            cursor: not-allowed !important;
+
+            &:hover {
+              background-color: transparent !important;
+            }
+          }
+
+          /* Fecha otro mes */
+          &.p-datepicker-other-month {
+            a,
+            span {
+              color: #d1d5db !important;
+            }
+          }
         }
       }
     }
   }
+
+  /* FOOTER */
+  .p-datepicker-footer {
+    padding: 0.3rem 0 0 0 !important;
+    border: none !important;
+    background: transparent !important;
+    display: flex !important;
+    justify-content: center !important;
+    gap: 0.3rem !important;
+    margin-top: 0.3rem !important;
+
+    button {
+      padding: 0.2rem 0.6rem !important;
+      font-size: 0.65rem !important;
+      height: auto !important;
+      border-radius: 3px !important;
+    }
+  }
 }
 
-// Button customizations
-::ng-deep .p-button {
-  border-radius: 8px;
+/* CHECKBOX */
+.filter-section {
+    display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding-left: 5rem; // 👈 separación visual
+  
+  flex-direction: column;
+  
+
+  .section-title {
+     font-size: 0.75rem;
   font-weight: 600;
-  min-width: 140px;
-  text-transform: uppercase;
+  color: #374151;
+  white-space: nowrap;
+  }
 }
 
-::ng-deep .p-button-primary,
-::ng-deep .p-button-info {
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.14);
+.checkbox-group {
+ display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
 }
 
-::ng-deep .p-button-primary:hover,
-::ng-deep .p-button-info:hover {
-  transform: translateY(-2px);
+.checkbox-item {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding-right: 0.15rem;
+  margin: 0;
+  white-space: nowrap;
+
+  label {
+    font-size: 0.8rem;
+    color: #6b7280;
+  }
 }
 
-::ng-deep .p-button-text {
-  background: transparent;
-  border: 1px solid #d8d8d8;
-}
-
-::ng-deep .p-button-text.p-button-rounded {
-  border-radius: 999px;
-}
-
-
-// Badge customizations
-::ng-deep .p-badge {
-  font-size: 0.75rem;
-  font-weight: 500;
-}
-
-// Checkbox customizations
+/* CHECKBOX PRIME */
 ::ng-deep .p-checkbox {
   .p-checkbox-box {
-    border-radius: 4px;
-  }
-}
+    width: 20px;
+    height: 20px;
+    border: 1.5px solid #6b7280 !important;
+    background-color: white !important;
+    border-radius: 3px;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    position: relative;
+    overflow: visible !important;
+    flex-shrink: 0;
+    cursor: pointer;
+    transition: all 0.2s ease !important;
 
-// Calendar customizations
-::ng-deep .p-datepicker {
-  .p-inputtext {
-    border-radius: 6px;
-  }
-}
-
-// Responsive adjustments
-@media (max-width: 768px) {
-  .grid {
-    .col-12 {
-      padding: 0.5rem;
+    &:hover {
+      border-color: #374151 !important;
     }
   }
 
-  ::ng-deep .p-card {
-    margin: 0.5rem;
+  input[type="checkbox"] {
+    display: none !important;
+  }
 
-    .p-card-body {
-      padding: 1rem;
+  .p-checkbox-icon,
+  .p-icon,
+  svg {
+    display: none !important;
+  }
+
+  /* Cuando el checkbox está seleccionado */
+  &.ng-checked .p-checkbox-box {
+    background-color: #3b82f6 !important;
+    border-color: #3b82f6 !important;
+
+    &::after {
+      content: '✓' !important;
+      color: #000 !important;
+      font-size: 1.2rem !important;
+      font-weight: 900 !important;
+      position: absolute !important;
+      top: 50% !important;
+      left: 50% !important;
+      transform: translate(-50%, -50%) !important;
+      z-index: 10 !important;
+      line-height: 1 !important;
     }
   }
 }
+
+/* BOTONES */
+.filter-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  padding-top: 0.8rem;
+  border-top: 1px solid #e5e7eb;
+
+  @media (max-width: 640px) {
+    flex-direction: column;
+
+    button {
+      width: 100%;
+    }
+  }
+}
+
+::ng-deep .p-button {
+  font-size: 0.8rem;
+  border-radius: 6px;
+  padding: 0.45rem 0.9rem;
+}
+
+/* TABLA */
+::ng-deep .p-datatable {
+  margin-top: 1.5rem;
+  border-radius: 10px;
+  overflow: hidden;
+
+  th {
+    background: #f9fafb;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  td {
+    font-size: 0.85rem;
+  }
+}
+
+/* TAG */
+::ng-deep .p-tag {
+  font-size: 0.75rem;
+}
+
+
+.dashboard {
+  max-width: 920px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.filters-form {
+  width: 100%;
+}
+
+/* Evita que los checkbox se deformen */
+.checkbox-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+/* Cada item bien alineado */
+.checkbox-item {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+/* IMPORTANTE: tabla contenida */
+::ng-deep .p-datatable {
+  width: 100% !important;
+}
+
+/* Evita que todo crezca de más */
+:host {
+  display: flex;
+  justify-content: center;
+}
+
+
+.filter-row-fechas-inline {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  flex-wrap: nowrap;      // 👈 CLAVE (evita que baje)
+  white-space: nowrap;    // 👈 refuerzo extra
+}
+
+
+.filters-top-row {
+  padding: 0.75rem 1rem;
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+    align-items: flex-end;
+}
+
+/*.filter-estados {
+  margin-top: 16px;
+}*/
+
+
+
+/* SOLO ARCHIVOS en vertical 
+.filter-archivos {
+  display: flex;
+  flex-direction: column; // 👈 vertical
+  align-items: flex-start;
+  gap: 0.4rem;
+}
+
+/* checkboxes en columna 
+.filter-archivos .checkbox-group {
+  display: flex;
+  flex-direction: column; // 👈 clave
+  gap: 0.3rem;
+}
+
+/* SOLO ESTADOS en vertical 
+.filter-estados {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.4rem;
+}
+
+/* checkboxes en columna 
+.filter-estados .checkbox-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}*/
+
+/* CONTENEDOR ARCHIVOS + ESTADOS */
+.filters-side-by-side {
+  display: flex;
+  gap: 1rem; // 👈 separación entre ambos
+  align-items: flex-start;
+}
+
+/* Ambos en vertical */
+.filter-archivos,
+.filter-estados {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+/* checkboxes vertical */
+.filter-archivos .checkbox-group,
+.filter-estados .checkbox-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.fecha-inline-item {
+  display: flex;            // 👈 horizontal
+  align-items: center;     // 👈 centra verticalmente
+  gap: 0.4rem;             // 👈 espacio entre label e input
+}
+
+.table-header {
+  display: flex;
+  justify-content: flex-end;
+}
+
+::ng-deep .p-datatable .p-datatable-header {
+  background: transparent !important;
+  border: 0 !important;
+  border-bottom: 0 !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+
+.excel-btn .pi {
+  font-size: 2.6rem; // 👈 tamaño grande
+}
+

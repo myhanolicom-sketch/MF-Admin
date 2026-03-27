@@ -1,21 +1,19 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, computed, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, FormArray } from '@angular/forms';
 import * as XLSX from 'xlsx';
 
-// PrimeNG imports
+// PrimeNG
 import { CardModule } from 'primeng/card';
-import { FieldsetModule } from 'primeng/fieldset';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ButtonModule } from 'primeng/button';
 import { TableModule } from 'primeng/table';
 import { PaginatorModule } from 'primeng/paginator';
-import { BadgeModule } from 'primeng/badge';
 import { TagModule } from 'primeng/tag';
-import { InputTextModule } from 'primeng/inputtext';
-import { IconFieldModule } from 'primeng/iconfield';
-import { InputIconModule } from 'primeng/inputicon';
+import { DatePickerModule } from 'primeng/datepicker';
+import { TooltipModule } from 'primeng/tooltip';
+
+
 
 interface ReportData {
   fechaHora: string;
@@ -24,12 +22,6 @@ interface ReportData {
   acciones?: string;
 }
 
-interface User {
-  id: number;
-  name: string;
-  email: string;
-  role: string;
-}
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -37,70 +29,44 @@ interface User {
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    FormsModule,
     CardModule,
-    FieldsetModule,
     CheckboxModule,
     ButtonModule,
     TableModule,
     PaginatorModule,
-    BadgeModule,
     TagModule,
-    InputTextModule,
-    IconFieldModule,
-    InputIconModule
+    DatePickerModule,
+    TooltipModule
   ],
   templateUrl: './admin-dashboard.component.html',
   styleUrls: ['./admin-dashboard.component.scss']
 })
 export class AdminDashboardComponent {
 
+  filterForm: FormGroup;
 
-  users = signal<User[]>([
-    { id: 1, name: 'MO', email: 'Generado OK', role: 'Admin' },
-    { id: 2, name: 'MD', email: 'Error al enviar', role: 'User' },
-    { id: 3, name: 'ME', email: 'Enviado', role: 'User' }
-  ]);
-
-  editUser(user: User) {
-    console.log('Editando usuario:', user);
-  }
-
-  deleteUser(id: number) {
-    this.users.update((users: User[]) => users.filter((u: User) => u.id !== id));
-  }
-
- filterForm: FormGroup;
-  
-  // Estados disponibles
-  estados = [
-    { key: 'generadoOk', label: 'Generado OK', color: 'success', selected: false },
-    { key: 'enviado', label: 'Enviado', color: 'info', selected: false },
-    { key: 'errorEnviar', label: 'Error al Regenerar', color: 'danger', selected: false },
-    { key: 'errorGenerar', label: 'Error al Reenviar', color: 'danger', selected: false }
+  estadosList = [
+    { key: 'generadoOk', label: 'Generado OK' },
+    { key: 'enviado', label: 'Enviado' },
+    { key: 'errorEnviar', label: 'Error al enviar' },
+    { key: 'errorGenerar', label: 'Error al generar' }
   ];
 
-  // Tipos de archivos
-  archivos = [
-    { id: 'MO', label: 'MO', checked: false },
-    { id: 'MD', label: 'MD', checked: false },
-    { id: 'ME', label: 'ME', checked: false },
-    { id: 'FL', label: 'FL', checked: false }
-  ];
+  archivosList = ['MO', 'MD', 'ME', 'FL'];
 
-  // Datos de la tabla
-  reportData: ReportData[] = [
+  reportData = signal<ReportData[]>([
     { fechaHora: '01/02/2026 10:15', archivo: 'MO', estado: 'generadoOk' },
     { fechaHora: '01/02/2026 10:15', archivo: 'MD', estado: 'errorEnviar' },
     { fechaHora: '01/02/2026 10:15', archivo: 'ME', estado: 'enviado' },
     { fechaHora: '01/02/2026 10:15', archivo: 'FL', estado: 'errorGenerar' }
-  ];
+  ]);
+
 
   // Paginación
   currentPage = 1;
   pageSize = 100;
   totalRecords = 0;
-  filteredData: ReportData[] = [];
+  filteredData = signal<ReportData[]>([]);
 
   get totalPages(): number {
     return Math.ceil(this.totalRecords / this.pageSize);
@@ -108,133 +74,84 @@ export class AdminDashboardComponent {
 
   get paginatedData(): ReportData[] {
     const startIndex = (this.currentPage - 1) * this.pageSize;
-    return this.filteredData.slice(startIndex, startIndex + this.pageSize);
+    return this.filteredData().slice(startIndex, startIndex + this.pageSize);
   }
 
   constructor(private fb: FormBuilder) {
     this.filterForm = this.fb.group({
       fechaDesde: [null],
-      fechaHasta: [null]
+      fechaHasta: [null],
+      estados: this.fb.array(this.estadosList.map(() => false)),
+      archivos: this.fb.array(this.archivosList.map(() => false))
     });
 
-    this.filteredData = [...this.reportData];
-    this.totalRecords = this.filteredData.length;
+    this.filteredData.set(this.reportData());
+
+    // 🔥 efecto reactivo automático
+    effect(() => {
+      this.filterForm.value;
+      this.applyFilters();
+    });
   }
 
-  ngOnInit(): void {
-    // Inicializar la tabla con todos los datos disponibles
-    this.filteredData = [...this.reportData];
-    this.totalRecords = this.filteredData.length;
+  get estadosArray(): FormArray {
+    return this.filterForm.get('estados') as FormArray;
+  }
+
+  get archivosArray(): FormArray {
+    return this.filterForm.get('archivos') as FormArray;
   }
 
   private parseFechaHora(fechaHora: string): Date {
-    // Formato dd/MM/yyyy HH:mm
     const [fecha, hora] = fechaHora.split(' ');
-    const [dia, mes, anio] = fecha.split('/').map(v => parseInt(v, 10));
-    const [horaNum, minNum] = hora ? hora.split(':').map(v => parseInt(v, 10)) : [0, 0];
-    return new Date(anio, mes - 1, dia, horaNum, minNum);
+    const [dia, mes, anio] = fecha.split('/').map(Number);
+    const [h, m] = hora.split(':').map(Number);
+    return new Date(anio, mes - 1, dia, h, m);
   }
 
-  applyFilters(): void {
-    const fechaDesde: Date | null = this.filterForm.value.fechaDesde;
-    const fechaHasta: Date | null = this.filterForm.value.fechaHasta;
-    const estadosSeleccionados = this.estados.filter(e => e.selected).map(e => e.key);
-    const archivosSeleccionados = this.archivos.filter(a => a.checked).map(a => a.id);
+  applyFilters() {
+    const { fechaDesde, fechaHasta, estados, archivos } = this.filterForm.value;
 
-    this.filteredData = this.reportData.filter(item => {
-      const itemDate = this.parseFechaHora(item.fechaHora);
+    const estadosSeleccionados = this.estadosList
+      .filter((_, i) => estados[i])
+      .map(e => e.key);
 
-      const matchesDate = (!fechaDesde || itemDate >= fechaDesde) && (!fechaHasta || itemDate <= fechaHasta);
-      const matchesEstado = estadosSeleccionados.length === 0 || estadosSeleccionados.includes(item.estado);
-      const matchesArchivo = archivosSeleccionados.length === 0 || archivosSeleccionados.includes(item.archivo);
+    const archivosSeleccionados = this.archivosList
+      .filter((_, i) => archivos[i]);
 
-      return matchesDate && matchesEstado && matchesArchivo;
+    const result = this.reportData().filter(item => {
+      const date = this.parseFechaHora(item.fechaHora);
+
+      return (
+        (!fechaDesde || date >= fechaDesde) &&
+        (!fechaHasta || date <= fechaHasta) &&
+        (estadosSeleccionados.length === 0 || estadosSeleccionados.includes(item.estado)) &&
+        (archivosSeleccionados.length === 0 || archivosSeleccionados.includes(item.archivo))
+      );
     });
 
-    this.totalRecords = this.filteredData.length;
-    this.currentPage = 1;
+    this.filteredData.set(result);
   }
 
-  onSearch(): void {
-    this.applyFilters();
-  }
-
-  applyFiltersOnChange(): void {
-    this.applyFilters();
-  }
-
-  onClear(): void {
+  onClear() {
     this.filterForm.reset({
       fechaDesde: null,
-      fechaHasta: null
+      fechaHasta: null,
+      estados: this.estadosList.map(() => false),
+      archivos: this.archivosList.map(() => false)
     });
-    this.estados.forEach(estado => estado.selected = false);
-    this.archivos.forEach(archivo => archivo.checked = false);
-    this.applyFilters();
   }
 
-  onPageChange(event: any): void {
-    this.currentPage = event.page + 1; // PrimeNG pages are 0-based
-  }
-
-  getEstadoClass(estado: string): string {
-    const estadoMap: { [key: string]: string } = {
-      'generadoOk': 'badge-success',
-      'enviado': 'badge-info',
-      'errorEnviar': 'badge-danger',
-      'errorGenerar': 'badge-danger'
-    };
-    return estadoMap[estado] || 'badge-secondary';
-  }
-
-  getEstadoLabel(estado: string): string {
-    const estadoMap: { [key: string]: string } = {
-      'generadoOk': 'Generado OK',
-      'enviado': 'Enviado',
-      'errorEnviar': 'Error al enviar',
-      'errorGenerar': 'Error al generar'
-    };
-    return estadoMap[estado] || estado;
-  }
-
-  getEstadoSeverity(estado: string): 'success' | 'info' | 'danger' | 'warn' | 'secondary' | 'contrast' {
-    const severityMap: { [key: string]: 'success' | 'info' | 'danger' | 'warn' | 'secondary' | 'contrast' } = {
-      'generadoOk': 'success',
-      'enviado': 'info',
-      'errorEnviar': 'danger',
-      'errorGenerar': 'danger'
-    };
-    return severityMap[estado] || 'secondary';
-  }
-
-  viewDetail(item: ReportData): void {
-    console.log('Ver detalle del item:', item);
-    // Implementar lógica para ver detalle
-  }
-
-  downloadFile(item: ReportData): void {
-    console.log('Descargar archivo:', item);
-    // Implementar lógica para descargar archivo
-  }
-
-  exportToExcel(): void {
-    const dataToExport = this.filteredData.map(item => ({
+  exportToExcel() {
+    const data = this.filteredData().map(item => ({
       'Fecha/Hora': item.fechaHora,
       'Archivo': item.archivo,
-      'Estado': this.getEstadoLabel(item.estado)
+      'Estado': item.estado
     }));
 
-    const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(dataToExport);
-    const workbook: XLSX.WorkBook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, 'Monitoreo');
-
-    // Ajustar ancho de columnas
-    worksheet['!cols'] = [
-      { wch: 20 },
-      { wch: 12 },
-      { wch: 20 }
-    ];
-
-    XLSX.writeFile(workbook, 'Reporte_Monitoreo.xlsx');
+    const ws = XLSX.utils.json_to_sheet(data);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Monitoreo');
+    XLSX.writeFile(wb, 'Reporte.xlsx');
   }
 }
