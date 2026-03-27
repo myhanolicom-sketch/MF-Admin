@@ -8,7 +8,8 @@ import { RouterModule } from '@angular/router';
   imports: [CommonModule, RouterModule],
   template: `
     <div class="admin-container">
-     
+   
+
       <main class="admin-content">
         <router-outlet></router-outlet>
       </main>

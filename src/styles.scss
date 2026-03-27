@@ -1,8 +1,82 @@
-/* PrimeNG Theme - handled by provider */
-/* @import 'primeng/resources/themes/lara-light-blue/theme.css'; */
-/* @import 'primeng/resources/primeng.css'; */
+/* PrimeNG / PrimeUIX fallback theme (no built-in CSS package in v20+). */
 @import 'primeicons/primeicons.css';
 @import 'primeflex/primeflex.css';
+
+/* Fallback styling for key PrimeNG classes when the new @primeuix CSS pipeline is not available */
+.p-button,
+.p-button.p-button-primary,
+.p-button.p-button-success,
+.p-button.p-button-info,
+.p-button.p-button-danger,
+.p-button.p-button-secondary {
+  border: 1px solid #d1d5db;
+  background: #f3f4f6;
+  color: #111827;
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+  transition: all 0.12s ease;
+}
+
+.p-button.p-button-primary {
+  background: #2563eb;
+  color: white;
+  border-color: #2563eb;
+}
+
+.p-button.p-button-success {
+  background: #10b981;
+  color: white;
+  border-color: #10b981;
+}
+
+.p-button.p-button-info {
+  background: #0ea5e9;
+  color: white;
+  border-color: #0ea5e9;
+}
+
+.p-button.p-button-danger {
+  background: #ef4444;
+  color: white;
+  border-color: #ef4444;
+}
+
+.p-button.p-button-secondary {
+  background: #e5e7eb;
+  color: #374151;
+  border-color: #d1d5db;
+}
+
+.p-button:hover {
+  filter: brightness(0.95);
+}
+
+.p-checkbox {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.p-checkbox .p-checkbox-box {
+  width: 1rem;
+  height: 1rem;
+  border: 1.2px solid #9ca3af;
+}
+
+.p-table,
+.p-datatable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.p-table th,
+.p-datatable th,
+.p-table td,
+.p-datatable td {
+  padding: 0.75rem;
+  border: 1px solid #e5e7eb;
+}
+
 
 /* MFE Admin Styles */
 html, body {
@@ -12,6 +86,11 @@ html, body {
   padding: 0;
   overflow: hidden;
 }
+
+body {
+  min-height: 100vh;
+}
+
 
 body {
   background: #f5f7fa;
@@ -26,13 +105,21 @@ body {
   padding: 0;
   width: 100%;
   height: 100%;
-  overflow: auto;
+  
 }
 
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100vh; // 🔥 controla altura real
+  overflow: hidden; // 🔥 evita scroll aquí
+}
 
 :host ::ng-deep .p-datepicker input {
   height: 32px;
   font-size: 0.85rem;
+  display: block;
+  min-height: 100vh;
 }
 
 
