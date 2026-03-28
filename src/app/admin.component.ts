@@ -18,6 +18,9 @@ import { RouterModule } from '@angular/router';
   styles: [`
     .admin-container {
       width: 100%;
+      heigth:100%;
+
+
     }
     
     .admin-header {
@@ -35,7 +38,7 @@ import { RouterModule } from '@angular/router';
     .admin-content {
       display: block;
       width: 100%;
-      min-height: calc(90vh - 80px);
+      min-height: calc(100vh - 100px);
       padding: 1rem 0;
     }
   `]

@@ -2,6 +2,7 @@
 @import 'primeicons/primeicons.css';
 @import 'primeflex/primeflex.css';
 
+
 /* Fallback styling for key PrimeNG classes when the new @primeuix CSS pipeline is not available */
 .p-button,
 .p-button.p-button-primary,
@@ -104,7 +105,7 @@ body {
   margin: 0;
   padding: 0;
   width: 100%;
-  height: 100%;
+  height: 50%;
   
 }
 
@@ -112,7 +113,7 @@ body {
   display: flex;
   flex-direction: column;
   height: 100vh; // 🔥 controla altura real
-  overflow: hidden; // 🔥 evita scroll aquí
+   // 🔥 evita scroll aquí
 }
 
 :host ::ng-deep .p-datepicker input {

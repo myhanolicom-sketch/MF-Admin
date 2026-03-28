@@ -1,134 +1,87 @@
 <div class="dashboard">
+  <div class="card">
+    <form [formGroup]="filterForm" class="filters-form">
+      
+      <div class="filter-row-fechas-inline">
+        <div class="fecha-inline-item">
+          <label>Desde:</label>
+          <p-datepicker formControlName="fechaDesde" [showIcon]="true" iconDisplay="input" placeholder="dd/mm/aaaa" appendTo="body"></p-datepicker>
+        </div>
 
-  <form [formGroup]="filterForm" class="filters-form">
-
-    
-
-<!-- FECHAS -->
-    <div class="filter-row-fechas-inline">
-      <div class="fecha-inline-item">
-        <label>Fecha:</label>
-           <p-datepicker
-            id="fechaDesde"
-            formControlName="fechaDesde"
-            [showIcon]="true"
-            placeholder="Desde"
-            styleClass="w-full datepicker-input"
-            panelStyleClass="datepicker-panel"
-            appendTo="body">
-          </p-datepicker>
-      </div>
-
-      <div class="fecha-inline-item">
-        <label>---</label>
-        <p-datepicker
-            id="fechaHasta"
-            formControlName="fechaHasta"
-            [showIcon]="true"
-            placeholder="Hasta"
-            styleClass="w-full datepicker-input"
-            panelStyleClass="datepicker-panel"
-            appendTo="body">
-          </p-datepicker>
-      </div>
+        <div class="fecha-inline-item">
+          <label>Hasta:</label>
+          <p-datepicker formControlName="fechaHasta" [showIcon]="true" iconDisplay="input" placeholder="dd/mm/aaaa" appendTo="body"></p-datepicker>
+        </div>
 
         <div class="filters-side-by-side">
- <!-- ARCHIVOS -->
-    <div class="filter-section filter-estados">
-      <span class="section-title">Estado</span>
-      <div formArrayName="estados" class="checkbox-group">
-         <div class="checkbox-item" *ngFor="let e of estadosList; let i = index">
-          <p-checkbox [formControlName]="i" binary="true"></p-checkbox>
-          <label>{{ e.label }}</label>
-        </div>
-        
-      </div>
-    </div>
+          <div class="filter-section">
+            <span class="section-title">Estado</span>
+            <div formArrayName="estados" class="checkbox-group">
+              <div class="checkbox-item" *ngFor="let e of estadosList; let i = index">
+                <p-checkbox [formControlName]="i" [binary]="true"></p-checkbox>
+                <label>{{ e.label }}</label>
+              </div>
+            </div>
+          </div>
 
-    </div>
-
-    <!-- ESTADOS -->
-    <div class="filter-section filter-archivos">
-      <span>Archivos</span>
-      <div formArrayName="archivos" class="checkbox-group">
-       <div class="checkbox-item" *ngFor="let a of archivosList; let i = index">
-          <p-checkbox [formControlName]="i" binary="true"></p-checkbox>
-          <label>{{ a }}</label>
+          <div class="filter-section">
+            <span class="section-title">Archivos</span>
+            <div formArrayName="archivos" class="checkbox-group">
+              <div class="checkbox-item" *ngFor="let a of archivosList; let i = index">
+                <p-checkbox [formControlName]="i" [binary]="true"></p-checkbox>
+                <label>{{ a }}</label>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
 
+      <div class="filter-actions">
+        <button pButton type="button" label="Buscar" icon="pi pi-search" class="p-button-primary" (click)="applyFilters()"></button>
+        <button pButton type="button" label="Limpiar" icon="pi pi-times" class="p-button-secondary" (click)="onClear()"></button>
+      </div>
+    </form>
+
+    <p-table 
+      [value]="filteredData()" 
+      [paginator]="true" 
+      [rows]="5" 
+      [rowsPerPageOptions]="[5, 10, 20]"
+      [tableStyle]="{ 'min-width': '50rem' }"
+      responsiveLayout="scroll"
+      styleClass="p-datatable-sm p-datatable-striped">
+      
+      <ng-template #caption>
+        <div class="table-header">
+          <span class="text-xl font-bold"> </span>
+          <button pButton type="button" icon="pi pi-file-excel" class="p-button-success p-button-rounded" (click)="exportToExcel()"></button>
         </div>
+      </ng-template>
 
-  
-    
+      <ng-template #header>
+        <tr>
+          <th pSortableColumn="fechaHora">Fecha/Hora <p-sortIcon field="fechaHora"></p-sortIcon></th>
+          <th pSortableColumn="archivo">Archivo <p-sortIcon field="archivo"></p-sortIcon></th>
+          <th pSortableColumn="estado">Estado <p-sortIcon field="estado"></p-sortIcon></th>
+          <th>Acciones</th>
+        </tr>
+      </ng-template>
 
-   
-
-    <!-- BOTONES -->
-    <div class="mb-4 flex gap-2 filter-actions">
-    <button 
-      pButton 
-      type="button" 
-      label="Buscar" 
-      icon="pi pi-search" 
-      class="p-button-primary"
-      >
-    </button>
-    <button 
-      pButton 
-      type="button" 
-      label="Limpiar" 
-      icon="pi pi-times" 
-      class="p-button-secondary"
-      (click)="onClear()">
-    </button>
-   
+      <ng-template #body let-report>
+        <tr>
+          <td>{{ report.fechaHora }}</td>
+          <td><span class="font-bold">{{ report.archivo }}</span></td>
+          <td>
+            <p-tag [value]="getEstadoLabel(report.estado)" [severity]="getEstadoSeverity(report.estado)"></p-tag>
+          </td>
+          <td>
+            <div class="acciones-cell">
+              <button pButton type="button" icon="pi pi-eye" class="p-button-text p-button-rounded"></button>
+              <button pButton type="button" icon="pi pi-send" class="p-button-text p-button-rounded p-button-help"></button>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
   </div>
-
-  </form>
-
-  
-<!-- TABLA -->
-<p-table [value]="filteredData()" [paginator]="true" [rows]="10" [responsiveLayout]="'scroll'" [showCurrentPageReport]="true" currentPageReportTemplate="Mostrando {first} - {last} de {totalRecords}">
-   <ng-template pTemplate="caption">
-    <div class="table-header">
-      <button 
-        pButton 
-        type="button" 
-        icon="pi pi-file-excel" 
-         class="p-button-success excel-btn"
-        (click)="exportToExcel()">
-      </button>
-    </div>
-  </ng-template>
-  <ng-template pTemplate="header">
-      <tr>
-        <th pSortableColumn="fechaHora">Fecha/Hora <p-sortIcon field="fechaHora"></p-sortIcon></th>
-        <th pSortableColumn="archivo">Archivo <p-sortIcon field="archivo"></p-sortIcon></th>
-        <th pSortableColumn="estado">Estado <p-sortIcon field="estado"></p-sortIcon></th>
-        <th>Acciones</th>
-      </tr>
-    </ng-template>
-
-    <ng-template pTemplate="body" let-report>
-      <tr>
-        <td>{{ report.fechaHora }}</td>
-        <td>{{ report.archivo }}</td>
-        <td>{{ report.estado }}</td>
-        <td>
-          <button pButton type="button" icon="pi pi-eye" class="p-button-sm p-button-info" ></button>
-          <button pButton type="button"  icon="pi pi-send" class="p-button-sm p-button-success" ></button>
-        </td>
-      </tr>
-    </ng-template>
-
-    <ng-template pTemplate="emptymessage">
-      <tr>
-        <td colspan="4" class="text-center">No hay datos para mostrar</td>
-      </tr>
-    </ng-template>
-  </p-table>
 </div>
- 
- 

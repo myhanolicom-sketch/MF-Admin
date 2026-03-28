@@ -1,4 +1,4 @@
-const { withModuleFederationPlugin } = require('@angular-architects/module-federation/webpack');
+const { shareAll } = require('@angular-architects/module-federation/webpack');
 
 module.exports = withModuleFederationPlugin({
   name: 'admin',
@@ -10,11 +10,15 @@ module.exports = withModuleFederationPlugin({
     './Module': './src/app/admin.routes.ts'
   },
 
-  shared: {
-    '@angular/core': { singleton: true, strictVersion: false },
-    '@angular/common': { singleton: true, strictVersion: false },
-    '@angular/router': { singleton: true, strictVersion: false },
-    'rxjs': { singleton: true, strictVersion: false },
-    'primeng': { singleton: true, strictVersion: false }
-  }
+ shared: {
+  ...shareAll({
+    singleton: true,
+    strictVersion: false,
+    requiredVersion: 'auto'
+  }),
+
+  'primeng': { singleton: true, strictVersion: false, requiredVersion: 'auto' },
+  'primeicons': { singleton: true, strictVersion: false, requiredVersion: 'auto' },
+  '@angular/animations': { singleton: true, strictVersion: false, requiredVersion: 'auto' }
+}
 });
