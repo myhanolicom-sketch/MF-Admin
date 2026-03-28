@@ -197,6 +197,44 @@
   font-weight: 600;
   padding: 0.2rem 0.5rem;
   border-radius: 6px;
+  background: transparent !important;
+  border: none !important;
+  color: inherit !important;
+}
+
+/* ESTADO CELL CON SEMÁFORO */
+.estado-cell {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.traffic-light {
+  display: inline-flex;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.traffic-generadoOk {
+  background-color: #10b981;
+  box-shadow: 0 0 4px rgba(16, 185, 129, 0.5);
+}
+
+.traffic-enviado {
+  background-color: #0ea5e9;
+  box-shadow: 0 0 4px rgba(14, 165, 233, 0.5);
+}
+
+.traffic-errorEnviar {
+  background-color: #ef4444;
+  box-shadow: 0 0 4px rgba(239, 68, 68, 0.5);
+}
+
+.traffic-errorGenerar {
+  background-color: #ef4444;
+  box-shadow: 0 0 4px rgba(239, 68, 68, 0.5);
 }
 
 /* 2. REDUCIR EL PANEL DESPLEGABLE (EL CALENDARIO EN SÍ) */

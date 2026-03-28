@@ -37,7 +37,7 @@
       </div>
 
       <div class="filter-actions">
-        <button pButton type="button" label="Buscar" icon="pi pi-search" class="p-button-primary" (click)="applyFilters()"></button>
+        <button pButton type="button" label="Buscar" icon="pi pi-search" class="p-button-primary" (click)="onSearch()" [loading]="isLoading()"></button>
         <button pButton type="button" label="Limpiar" icon="pi pi-times" class="p-button-secondary" (click)="onClear()"></button>
       </div>
     </form>
@@ -72,12 +72,16 @@
           <td>{{ report.fechaHora }}</td>
           <td><span class="font-bold">{{ report.archivo }}</span></td>
           <td>
-            <p-tag [value]="getEstadoLabel(report.estado)" [severity]="getEstadoSeverity(report.estado)"></p-tag>
+            <div class="estado-cell">
+              <span class="traffic-light" [ngClass]="'traffic-' + report.estado"></span>
+              <p-tag [value]="getEstadoLabel(report.estado)" severity="secondary"></p-tag>
+            </div>
           </td>
           <td>
             <div class="acciones-cell">
-              <button pButton type="button" icon="pi pi-eye" class="p-button-text p-button-rounded"></button>
-              <button pButton type="button" icon="pi pi-send" class="p-button-text p-button-rounded p-button-help"></button>
+              <button pButton type="button" icon="pi pi-eye" class="p-button-text p-button-rounded" pTooltip="Ver detalle" tooltipPosition="top" (click)="showDetailModal(report)"></button>
+              <button *ngIf="report.estado === 'errorEnviar'" pButton type="button" icon="pi pi-send" class="p-button-text p-button-rounded p-button-help" pTooltip="Reenviar" tooltipPosition="top"></button>
+              <button *ngIf="report.estado === 'errorGenerar'" pButton type="button" icon="pi pi-refresh" class="p-button-text p-button-rounded" pTooltip="Regenerar" tooltipPosition="top"></button>
             </div>
           </td>
         </tr>
